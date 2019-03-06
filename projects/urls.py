@@ -1,4 +1,4 @@
-"""structure_rest_framework URL Configuration
+"""projects URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -16,29 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
+from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.documentation import include_docs_urls
+from .routes import router
 
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ("url", "username", "email", "is_staff")
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-router = routers.DefaultRouter()
-router.register(r"users", UserViewSet)
+# router = routers.DefaultRouter()
+# router.register(r"users", UserViewSet)
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     url(r"^", include(router.urls)),
+    # url(r"^api/token/", obtain_auth_token, name="api-token"),
     url(r"^docs/", include_docs_urls(title="Demo apis", public=False)),
-    url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
