@@ -19,6 +19,9 @@ from django.conf.urls import url, include
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.documentation import include_docs_urls
 from .routes import router
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title="Demo API")
 
 # router = routers.DefaultRouter()
 # router.register(r"users", UserViewSet)
@@ -26,8 +29,10 @@ from .routes import router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    url(r"^", include(router.urls)),
+    # url(r"^", include(router.urls)),
+    path(r"", include("apis.users.urls")),
     # url(r"^api/token/", obtain_auth_token, name="api-token"),
-    url(r"^docs/", include_docs_urls(title="Demo apis", public=False)),
+    # path(r"swagger-docs/", schema_view),
+    # url(r"^docs/", include_docs_urls(title="Demo apis", public=False)),
     # url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

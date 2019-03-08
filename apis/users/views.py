@@ -5,6 +5,7 @@ from .serializer import UserSerializer
 from rest_framework.response import Response
 from rest_framework import generics
 
+
 # Create your views here.
 
 
@@ -15,3 +16,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def get(self, request, format=None):
         serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
+
+
+class UserRegistration(generics.CreateAPIView):
+    serializer_class = UserSerializer
+
