@@ -16,23 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
-from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework.documentation import include_docs_urls
-from .routes import router
-from rest_framework_swagger.views import get_swagger_view
-
-schema_view = get_swagger_view(title="Demo API")
-
-# router = routers.DefaultRouter()
-# router.register(r"users", UserViewSet)
+from rest_framework_simplejwt import views as jwt_views
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # url(r"^", include(router.urls)),
     path(r"", include("apis.users.urls")),
-    # url(r"^api/token/", obtain_auth_token, name="api-token"),
-    # path(r"swagger-docs/", schema_view),
-    # url(r"^docs/", include_docs_urls(title="Demo apis", public=False)),
-    # url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/token/", jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
 ]

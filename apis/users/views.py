@@ -1,23 +1,30 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
-from .serializer import UserSerializer
-from rest_framework.response import Response
 from rest_framework import generics
-
+from .serializer import UserSerializer
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from django.contrib.auth import authenticate
 
 # Create your views here.
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserCreate(generics.ListCreateAPIView):
     queryset = User.objects.all()
+
+    authentication_classes = ()
+    permission_classes = ()
     serializer_class = UserSerializer
 
-    def get(self, request, format=None):
-        serializer = self.serializer_class(self.queryset, many=True)
-        return Response(serializer.data)
 
+class LoginView(APIView):
+    permission_classes = ()
 
-class UserRegistration(generics.CreateAPIView):
-    serializer_class = UserSerializer
-
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        user = authenticate(username=username, password=password)
+        if user:
+            return Response({"token": user.auth_token.key})
+        else:
+            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
