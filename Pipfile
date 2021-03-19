@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 django = "==2.1.7"
-djangorestframework="==3.9.1"
+djangorestframework="==3.11.2"
 djangorestframework-camel-case="==1.0.3"
 markdown = "*"
 django-filter = "==2.1.0"
